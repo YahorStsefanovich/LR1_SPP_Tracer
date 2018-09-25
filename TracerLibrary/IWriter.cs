@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 //ready
 namespace TracerLibrary
 {
-     public interface ITracer
+     public interface IWriter
      {
-          void StartTrace();
-
-          void StopTrace();
-
-          TraceResult GetTraceResult();
+          void Write(TraceResult traceResult, IConverter converter);
      }
 }

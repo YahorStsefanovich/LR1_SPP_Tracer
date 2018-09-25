@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-
+//ready
 namespace TracerLibrary
 {
      [Serializable]
@@ -36,7 +36,7 @@ namespace TracerLibrary
                get { return time; }
           }
 
-          [DataMember(Name = "methods", Order = 2)]
+          [DataMember(Name = "methods", Order =2)]
           public List<MethodInfo> Methods
           {
                get { return methods; }
@@ -44,6 +44,14 @@ namespace TracerLibrary
 
           public ThreadInfo()
           {
+               time = 0;
+               methods = new List<MethodInfo>();
+               callMethods = new Stack<MethodInfo>();
+          }
+
+          public ThreadInfo(int threadID)
+          {
+               id = threadID;
                time = 0;
                methods = new List<MethodInfo>();
                callMethods = new Stack<MethodInfo>();

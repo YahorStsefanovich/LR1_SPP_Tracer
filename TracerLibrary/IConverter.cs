@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //ready
 namespace TracerLibrary
 {
-     public interface ITracer
+     public interface IConverter
      {
-          void StartTrace();
-
-          void StopTrace();
-
-          TraceResult GetTraceResult();
+          void Convert(TraceResult traceResulkt, Stream stream);
      }
 }

@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-
+//ready
 namespace TracerLibrary
 {
     public class Tracer : ITracer
@@ -19,12 +20,13 @@ namespace TracerLibrary
 
           public void StartTrace()
           {
-               MethodBase nameOfItemMethdod = new StackTrace().GetFrame(1).GetMethod();
+               MethodBase itemMethdod = new StackTrace().GetFrame(1).GetMethod();
+               traceResult.StartTrace(Thread.CurrentThread.ManagedThreadId, itemMethdod);
           }
 
           public void StopTrace()
           {
-
+               traceResult.StopTrace(Thread.CurrentThread.ManagedThreadId); 
           }
 
           public TraceResult GetTraceResult()
