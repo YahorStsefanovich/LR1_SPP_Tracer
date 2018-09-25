@@ -26,5 +26,6 @@ namespace TracerLibrary
                     xmlConverter.WriteObject(xmlWriter, traceResult);
                }
           }
+
      }
 }

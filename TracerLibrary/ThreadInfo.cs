@@ -14,13 +14,13 @@ namespace TracerLibrary
           private List<MethodInfo> methods;
           private Stack<MethodInfo> callMethods;
 
-          [DataMember (Name = "id", Order = 0)]
+          [DataMember(Name = "id", Order = 0)]
           public int Id
           {
                get { return id; }
           }
 
-          [DataMember(Name = "id", Order = 1)]
+          [DataMember(Name = "time", Order = 1)]
           public string Time
           {
                get { return time.ToString() + "ms"; }
@@ -32,7 +32,7 @@ namespace TracerLibrary
                get { return time; }
           }
 
-          [DataMember(Name = "methods", Order =2)]
+          [DataMember(Name = "methods", Order = 2)]
           public List<MethodInfo> Methods
           {
                get { return methods; }
@@ -63,21 +63,20 @@ namespace TracerLibrary
                {
                     callMethods.Peek().AddNestedMethod(method);
                }
-
+                    
                callMethods.Push(method);
                method.StartTrace();
-
           }
 
           public void StopTrace()
           {
-               MethodInfo lastMethod = callMethods.Peek();
-               lastMethod.StopTrace();
+               MethodInfo lastmethod = callMethods.Peek();
+               lastmethod.StopTrace();
                if (callMethods.Count == 1)
                {
-                    time += lastMethod.TimeInt;
+                    time += lastmethod.TimeInt;
                }
-
+                   
                callMethods.Pop();
           }
      }

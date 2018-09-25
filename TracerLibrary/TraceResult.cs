@@ -11,17 +11,15 @@ namespace TracerLibrary
      public class TraceResult
      {
           private ConcurrentDictionary<int, ThreadInfo> threadsList;
-
           [DataMember(Name = "threads")]
           public List<ThreadInfo> threads
           {
                get
                {
-                    SortedDictionary<int, ThreadInfo> sortedDictionary =
-                         new SortedDictionary<int, ThreadInfo>();
-                    return new List<ThreadInfo>(sortedDictionary.Values);
+                    SortedDictionary<int, ThreadInfo> sorteddictionary = new SortedDictionary<int, ThreadInfo>(threadsList);
+                    return new List<ThreadInfo>(sorteddictionary.Values);
                }
-          } 
+          }
 
           public TraceResult()
           {
@@ -37,12 +35,11 @@ namespace TracerLibrary
           public void StopTrace(int id)
           {
                ThreadInfo threadInfo;
-               if (! threadsList.TryGetValue(id, out threadInfo))
+               if (!threadsList.TryGetValue(id, out threadInfo))
                {
                     throw new ArgumentException("Invalid thread ID");
                }
                threadInfo.StopTrace();
           }
-
      }
 }

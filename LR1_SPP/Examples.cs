@@ -20,12 +20,19 @@ namespace LR1_SPP
                for (int i = 0; i < 5; i++)
                {
                     Thread thread;
-                    if (i < 2)
-                         thread = new Thread(method1);
-                    else if (i >= 2 && i < 4)
-                         thread = new Thread(method2);
-                    else
-                         thread = new Thread(method8);
+                    switch (i){
+                         case 0:
+                         case 1:
+                              thread = new Thread(method1);
+                              break;
+                         case 2:
+                         case 3:
+                              thread = new Thread(method2);
+                              break;
+                         default:
+                              thread = new Thread(method8);
+                              break;
+                    }
                     threads.Add(thread);
                     thread.Start();
                }

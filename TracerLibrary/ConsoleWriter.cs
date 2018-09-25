@@ -11,7 +11,6 @@ namespace TracerLibrary
                {
                     converter.Convert(traceResult, consoleStream);
                }
-
           }
      }
 }

@@ -5,7 +5,7 @@ using System.Threading;
 namespace TracerLibrary
 {
      public class Tracer : ITracer
-    {
+     {
           private TraceResult traceResult;
 
           public Tracer()
@@ -15,18 +15,18 @@ namespace TracerLibrary
 
           public void StartTrace()
           {
-               MethodBase itemMethdod = new StackTrace().GetFrame(1).GetMethod();
-               traceResult.StartTrace(Thread.CurrentThread.ManagedThreadId, itemMethdod);
+               MethodBase currentMethod = new StackTrace().GetFrame(1).GetMethod();
+               traceResult.StartTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
           }
 
           public void StopTrace()
           {
-               traceResult.StopTrace(Thread.CurrentThread.ManagedThreadId); 
+               traceResult.StopTrace(Thread.CurrentThread.ManagedThreadId);
           }
 
           public TraceResult GetTraceResult()
           {
                return traceResult;
           }
-    }
+     }
 }

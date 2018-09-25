@@ -23,7 +23,6 @@ namespace TracerLibrary
           {
                get { return methodName; }
           }
-
           [DataMember(Name = "class", Order = 1)]
           public string ClassName
           {
@@ -43,7 +42,7 @@ namespace TracerLibrary
           }
 
           [DataMember(Name = "methods", Order = 3)]
-          public List<MethodInfo> MethodList
+          public List<MethodInfo> Methodlist
           {
                get { return methodsList; }
           }

@@ -4,6 +4,6 @@ namespace TracerLibrary
 {
      public interface IConverter
      {
-          void Convert(TraceResult traceResulkt, Stream stream);
+          void Convert(TraceResult traceResult, Stream stream);
      }
 }

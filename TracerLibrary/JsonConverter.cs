@@ -16,17 +16,17 @@ namespace TracerLibrary
 
           public void Convert(TraceResult traceResult, Stream stream)
           {
-               using (XmlDictionaryWriter jsonWrite =
+               using (XmlDictionaryWriter jsonWriter = 
                     JsonReaderWriterFactory.CreateJsonWriter(
                          stream,
-                         Encoding.UTF8, 
+                         Encoding.UTF8,
                          ownsStream: true,
-                         indent : true, 
-                         indentChars : "     " 
-                         ))
+                         indent: true,
+                         indentChars: "     "))
                {
-                    jsonFormatter.WriteObject(jsonWrite, traceResult);
+                    jsonFormatter.WriteObject(jsonWriter, traceResult);
                }
+
           }
      }
 }

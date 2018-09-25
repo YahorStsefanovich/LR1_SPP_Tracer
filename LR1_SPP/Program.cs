@@ -1,28 +1,29 @@
-﻿using TracerLibrary;
+﻿using System.Collections.Generic;
+using System.Threading;
+using TracerLibrary;
 //ready
 namespace LR1_SPP
 {
      class Program
      {
-          static Tracer tracer = new Tracer(); 
+          static TracerLibrary.Tracer tracer = new TracerLibrary.Tracer();
 
           static void Main(string[] args)
           {
                TraceResult result;
-               Examples examples = new Examples(tracer);
-               examples.StartTest();
+               Examples example = new Examples(tracer);
+               example.StartTest();
                result = tracer.GetTraceResult();
 
-               string jsonFileName = "jsonFile.dat";
-               string xmlFileName = "xmlFile.dat";
+               string jsonFileName = "json.dat";
+               string xmlFileName = "xml.dat";
 
                LoadToFile(new JsonConverter(), result, jsonFileName);
                LoadToFile(new XMLConverter(), result, xmlFileName);
                LoadToConsole(new JsonConverter(), result);
           }
 
-          static void LoadToFile(IConverter converter, 
-               TraceResult result, string fileName)
+          static void LoadToFile(IConverter converter, TraceResult result, string fileName)
           {
                IWriter writer = new FileWriter(fileName);
                writer.Write(result, converter);

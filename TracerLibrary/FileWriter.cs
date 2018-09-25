@@ -2,21 +2,21 @@
 //ready
 namespace TracerLibrary
 {
-     public class FileWriter : IWriter
-     {
-          private string fileName;
+    public class FileWriter:IWriter
+    {
+        private string fileName;
 
-          public FileWriter(string FileName)
-          {
-               this.fileName = FileName;
-          }
+        public FileWriter(string fileName)
+        {
+            this.fileName = fileName;
+        }
 
-          public void Write(TraceResult result, IConverter converter)
-          {
-               using (FileStream fs = new FileStream(fileName, FileMode.Create))
-               {
-                    converter.Convert(result, fs);
-               }
-          }
-     }
+        public void Write(TraceResult result,IConverter converter)
+        {
+            using (FileStream fs = new FileStream(fileName, FileMode.Create))
+            {
+                converter.Convert(result, fs);
+            }
+        }
+    }
 }
