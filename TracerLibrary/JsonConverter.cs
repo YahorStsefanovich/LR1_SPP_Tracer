@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 //ready
 namespace TracerLibrary
@@ -26,7 +22,7 @@ namespace TracerLibrary
                          Encoding.UTF8, 
                          ownsStream: true,
                          indent : true, 
-                         indentChars : "/t" 
+                         indentChars : "     " 
                          ))
                {
                     jsonFormatter.WriteObject(jsonWrite, traceResult);

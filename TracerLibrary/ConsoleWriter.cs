@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+//ready
 namespace TracerLibrary
 {
-     class ConcoleWriter : IWriter
+     public class ConsoleWriter : IWriter
      {
           public void Write(TraceResult traceResult, IConverter converter)
           {

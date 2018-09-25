@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 //ready
 namespace TracerLibrary
 {
-    public class Tracer : ITracer
+     public class Tracer : ITracer
     {
           private TraceResult traceResult;
 
