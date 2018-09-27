@@ -6,7 +6,7 @@ namespace LR1_SPP
 {
      class Program
      {
-          static TracerLibrary.Tracer tracer = new TracerLibrary.Tracer();
+          static Tracer tracer = new Tracer();
 
           static void Main(string[] args)
           {

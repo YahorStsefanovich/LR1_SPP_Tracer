@@ -18,24 +18,24 @@ namespace TracerLibrary
           public int Id
           {
                get { return id; }
+               private set { }
           }
-
           [DataMember(Name = "time", Order = 1)]
           public string Time
           {
                get { return time.ToString() + "ms"; }
+               private set { }
           }
-
           [XmlIgnore]
           public long TimeInt
           {
                get { return time; }
           }
-
           [DataMember(Name = "methods", Order = 2)]
           public List<MethodInfo> Methods
           {
                get { return methods; }
+               private set { }
           }
 
           public ThreadInfo()
@@ -62,21 +62,21 @@ namespace TracerLibrary
                else
                {
                     callMethods.Peek().AddNestedMethod(method);
-               }
-                    
+               }     
+                          
                callMethods.Push(method);
                method.StartTrace();
           }
 
           public void StopTrace()
           {
-               MethodInfo lastmethod = callMethods.Peek();
-               lastmethod.StopTrace();
+               MethodInfo lastMethod = callMethods.Peek();
+               lastMethod.StopTrace();
                if (callMethods.Count == 1)
                {
-                    time += lastmethod.TimeInt;
+                    time += lastMethod.TimeInt;
                }
-                   
+                    
                callMethods.Pop();
           }
      }
