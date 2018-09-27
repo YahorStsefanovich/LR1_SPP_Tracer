@@ -23,14 +23,14 @@ namespace LR1_SPP
                     switch (i){
                          case 0:
                          case 1:
-                              thread = new Thread(method1);
+                              thread = new Thread(firstMethod);
                               break;
                          case 2:
                          case 3:
-                              thread = new Thread(method2);
+                              thread = new Thread(secondMethod);
                               break;
                          default:
-                              thread = new Thread(method8);
+                              thread = new Thread(sixthMethod);
                               break;
                     }
                     threads.Add(thread);
@@ -43,22 +43,22 @@ namespace LR1_SPP
                }
           }
 
-          public void method1()
+          public void firstMethod()
           {
                tracer.StartTrace();
                Thread.Sleep(100);
-               method3();
+               thirdMethod();
                tracer.StopTrace();
           }
 
-          public void method2()
+          public void secondMethod()
           {
                tracer.StartTrace();
                var threads = new List<Thread>();
 
                for (int i = 0; i < 3; i++)
                {
-                    Thread thread = new Thread(method5);
+                    Thread thread = new Thread(fifthMethod);
                     threads.Add(thread);
                     thread.Start();
                }
@@ -68,33 +68,33 @@ namespace LR1_SPP
                     thread.Join();
                }
                Thread.Sleep(200);
-               method4();
-               method5();
+               fourthMethod();
+               fifthMethod();
                tracer.StopTrace();
           }
 
-          public void method3()
+          public void thirdMethod()
           {
                tracer.StartTrace();
                Thread.Sleep(300);
                tracer.StopTrace();
           }
 
-          public void method4()
+          public void fourthMethod()
           {
                tracer.StartTrace();
                Thread.Sleep(400);
                tracer.StopTrace();
           }
 
-          public void method5()
+          public void fifthMethod()
           {
                tracer.StartTrace();
                var threads = new List<Thread>();
 
                for (int i = 0; i < 2; i++)
                {
-                    Thread thread = new Thread(method6);
+                    Thread thread = new Thread(sixthMethod);
                     threads.Add(thread);
                     thread.Start();
                }
@@ -104,31 +104,15 @@ namespace LR1_SPP
                     thread.Join();
                }
                Thread.Sleep(500);
-               method6();
+               sixthMethod();
                tracer.StopTrace();
           }
 
-          public void method6()
+          public void sixthMethod()
           {
                tracer.StartTrace();
                Thread.Sleep(600);
-               method7();
                tracer.StopTrace();
           }
-
-          public void method7()
-          {
-               tracer.StartTrace();
-               Thread.Sleep(700);
-               tracer.StopTrace();
-          }
-
-          public void method8()
-          {
-               tracer.StartTrace();
-               Thread.Sleep(800);
-               tracer.StopTrace();
-          }
-
      }
 }
