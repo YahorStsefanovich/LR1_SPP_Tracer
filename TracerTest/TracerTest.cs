@@ -11,46 +11,46 @@ namespace TracerTest
           private Tracer tracer;
           private int sleepTime;
           private TraceResult traceResult;
-          private const int threadscount = 3;
-          private const int threadsnestedcount = 2;
+          private const int threadsCount = 3;
+          private const int threadsNestedCount = 2;
 
-          public void TestMethod()
+          public void TestMethod(int sleepTime)
           {
                tracer.StartTrace();
                Thread.Sleep(sleepTime);
                tracer.StopTrace();
           }
 
-          public void TestMethod2()
+          public void TestMethod2(int sleepTime)
           {
                tracer.StartTrace();
                Thread.Sleep(sleepTime * 2);
                tracer.StopTrace();
           }
 
-          public void Innermethod()
+          public void InnerMethod(int sleepTime)
           {
                tracer.StartTrace();
                Thread.Sleep(sleepTime);
-               TestMethod();
+               TestMethod(sleepTime);
                tracer.StopTrace();
           }
 
-          public void NestedMethod()
+          public void NestedMethod(int sleepTime)
           {
                tracer.StartTrace();
                Thread.Sleep(sleepTime);
-               Innermethod();
+               InnerMethod(sleepTime);
                tracer.StopTrace();
           }
 
-          public void MultipleThreadMethod()
+          public void MultipleThreadMethod(int sleepTime)
           {
                tracer.StartTrace();
                var threads = new List<Thread>();
-               for (int i = 0; i < threadsnestedcount; i++)
+               for (int i = 0; i < threadsNestedCount; i++)
                {
-                    Thread thread = new Thread(TestMethod);
+                    Thread thread = new Thread(()=>TestMethod(sleepTime));
                     threads.Add(thread);
                     thread.Start();
                }
@@ -58,23 +58,23 @@ namespace TracerTest
                {
                     thread.Join();
                }
-               TestMethod();
+               TestMethod(sleepTime);
                Thread.Sleep(sleepTime);
                tracer.StopTrace();
           }
 
-          //время одного потока
+          //time of single thread
           [TestMethod]
           public void TimeTestSingleThread()
           {
                tracer = new Tracer();
                sleepTime = 228;
-               TestMethod();
+               TestMethod(sleepTime);
                traceResult = tracer.GetTraceResult();
                Assert.IsTrue(traceResult.threads[0].TimeInt >= sleepTime);
           }
 
-          //время нескольких потоков
+          //time of several threads
           [TestMethod]
           public void TimeTestMultiThread()
           {
@@ -82,9 +82,9 @@ namespace TracerTest
                sleepTime = 111;
 
                var threads = new List<Thread>();
-               for (int i = 0; i < threadscount; i++)
+               for (int i = 0; i < threadsCount; i++)
                {
-                    Thread thread = new Thread(TestMethod);
+                    Thread thread = new Thread(()=>TestMethod(sleepTime));
                     threads.Add(thread);
                     thread.Start();
                }
@@ -99,23 +99,23 @@ namespace TracerTest
                {
                     actualtime += traceResult.threads[i].TimeInt;
                }
-               Assert.IsTrue(actualtime >= sleepTime * threadscount);
+               Assert.IsTrue(actualtime >= sleepTime * threadsCount);
           }
 
-          //время вложенных методов
+          //time of nested methods
           [TestMethod]
           public void TimeTestNestedMethods()
           {
                tracer = new Tracer();
                sleepTime = 50;
 
-               NestedMethod();
+               NestedMethod(sleepTime);
                traceResult = tracer.GetTraceResult();
 
                Assert.IsTrue(traceResult.threads[0].TimeInt >= sleepTime * 3);
           }
 
-          //вложенные потоки
+          //nested threads
           [TestMethod]
           public void TestNestedThreads()
           {
@@ -124,9 +124,9 @@ namespace TracerTest
                int singlemethods = 0, nestedmethods = 0;
 
                var threads = new List<Thread>();
-               for (int i = 0; i < threadscount; i++)
+               for (int i = 0; i < threadsCount; i++)
                {
-                    Thread thread = new Thread(MultipleThreadMethod);
+                    Thread thread = new Thread(()=>MultipleThreadMethod(sleepTime));
                     threads.Add(thread);
                     thread.Start();
                }
@@ -136,7 +136,7 @@ namespace TracerTest
                }
 
                traceResult = tracer.GetTraceResult();
-               Assert.AreEqual(threadscount * threadsnestedcount + threadscount, traceResult.threads.Count);
+               Assert.AreEqual(threadsCount * threadsNestedCount + threadsCount, traceResult.threads.Count);
                for (int i = 0; i < traceResult.threads.Count; i++)
                {
                     Assert.AreEqual(1, traceResult.threads[i].Methods.Count);
@@ -150,70 +150,44 @@ namespace TracerTest
                     else
                          singlemethods++;
                }
-               Assert.AreEqual(threadscount, nestedmethods);
-               Assert.AreEqual(threadsnestedcount * threadscount, singlemethods);
+               Assert.AreEqual(threadsCount, nestedmethods);
+               Assert.AreEqual(threadsNestedCount * threadsCount, singlemethods);
           }
 
-          //несколько методов в одном потоке(не вложенных)
+          //several methods in single thread
           [TestMethod]
           public void TestMultipleMethodsInSingleThread()
           {
                tracer = new Tracer();
                sleepTime = 400;
 
-               TestMethod();
-               TestMethod2();
+               TestMethod(sleepTime);
+               TestMethod2(sleepTime);
                traceResult = tracer.GetTraceResult();
                Assert.AreEqual(1, traceResult.threads.Count);
                Assert.AreEqual(2, traceResult.threads[0].Methods.Count);
                Assert.IsTrue(traceResult.threads[0].TimeInt >= sleepTime * 3);
                Assert.AreEqual(nameof(TestMethod), traceResult.threads[0].Methods[0].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[0].ClassName);
                Assert.AreEqual(nameof(TestMethod2), traceResult.threads[0].Methods[1].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[1].ClassName);
           }
 
-          //один метод в одном потоке
+          //single method in single thread
           [TestMethod]
           public void TestSingleNestedMethod()
           {
                tracer = new Tracer();
-               sleepTime = 666;
+               sleepTime = 1000;
 
-               TestMethod();
+               TestMethod(sleepTime);
                traceResult = tracer.GetTraceResult();
 
-               Assert.AreEqual(1, traceResult.threads.Count);//количесво потоков
-               Assert.AreEqual(1, traceResult.threads[0].Methods.Count);//количесво методов в потоке
-               Assert.IsTrue(traceResult.threads[0].TimeInt >= sleepTime);//время потока
+               Assert.AreEqual(1, traceResult.threads.Count);
+               Assert.AreEqual(1, traceResult.threads[0].Methods.Count);
+               Assert.IsTrue(traceResult.threads[0].TimeInt >= sleepTime);
                Assert.AreEqual(Thread.CurrentThread.ManagedThreadId, traceResult.threads[0].Id);
-               Assert.AreEqual(0, traceResult.threads[0].Methods[0].Methodlist.Count);//количесво методов в Testmethod
-               Assert.IsTrue(traceResult.threads[0].Methods[0].TimeInt >= sleepTime);//время NestedMethod
+               Assert.AreEqual(0, traceResult.threads[0].Methods[0].Methodlist.Count);
+               Assert.IsTrue(traceResult.threads[0].Methods[0].TimeInt >= sleepTime);
                Assert.AreEqual(nameof(TestMethod), traceResult.threads[0].Methods[0].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[0].ClassName);
-          }
-
-          //нескольоко вложенных методов в одном потоке
-          [TestMethod]
-          public void TestMultipleNestedMethods()
-          {
-               tracer = new Tracer();
-               sleepTime = 312;
-
-               NestedMethod();
-               traceResult = tracer.GetTraceResult();
-
-               Assert.AreEqual(1, traceResult.threads.Count);//количесво потоков
-               Assert.AreEqual(1, traceResult.threads[0].Methods.Count);//количесво методов в потоке
-               Assert.AreEqual(1, traceResult.threads[0].Methods[0].Methodlist.Count);//количесво методов в NestedMethod
-               Assert.AreEqual(nameof(NestedMethod), traceResult.threads[0].Methods[0].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[0].ClassName);
-               Assert.AreEqual(1, traceResult.threads[0].Methods[0].Methodlist[0].Methodlist.Count);//количесво методов в InnerMethod
-               Assert.AreEqual(nameof(Innermethod), traceResult.threads[0].Methods[0].Methodlist[0].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[0].Methodlist[0].ClassName);
-               Assert.AreEqual(0, traceResult.threads[0].Methods[0].Methodlist[0].Methodlist[0].Methodlist.Count);//количесво методов в TestMethod
-               Assert.AreEqual(nameof(TestMethod), traceResult.threads[0].Methods[0].Methodlist[0].Methodlist[0].MethodName);
-               Assert.AreEqual(nameof(TracerTest), traceResult.threads[0].Methods[0].Methodlist[0].Methodlist[0].ClassName);
           }
      }
 }
